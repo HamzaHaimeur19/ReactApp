@@ -1,25 +1,69 @@
-import logo from './logo.svg';
+import React from 'react';
+import { useEffect } from 'react';
+import MovieCard from './MovieCard';
+import { useState } from 'react';
 import './App.css';
+import SearchIcon from './search.svg'; // importing search icon in svg format
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// [] in useEffect hook DEPENDACY ARRAY IF WE WANT TO CALL IT FROM THE START 
+// async function = takes some time to fetch a data used in searching
+// const response = await fetch (`${API_URL}&s=${title}`); = response to fetch data by title on search from user
+//searchMovies function allow us to search movies
+//<img src = {movie1.Poster !== 'N/A' ? movie1.Poster : 'https://via.placeholder.com/400'} /> = check if the json data have the image or not
+//onChange={(e) => setSearchTem(e.target.value ) = if the value of search of input is changed
+//onClick={() => searchMovies(searchTerm)} /> = if we click on the searc icon we gett he result
+//Search = search by string from the API used
+//API key 66252fcb
+const API_URL = 'https://www.omdbapi.com?apikey=66252fcb';
+
+const movie1 = {
+    Poster: "https://m.media-amazon.com/images/M/MV5BZDlmMGQwYmItNTNmOS00OTNkLTkxNTYtNDM3ZWVlMWUyZDIzXkEyXkFqcGdeQXVyMTA5Mzk5Mw@@._V1_SX300.jpg",
+    Title: "Spiderman in Cannes",
+    Type: "movie",
+    Year: "2016",
+    imdbID: "tt5978586"
+}
+
+const App = () => {
+    const [movies, setMovies] = useState([]); // for looping movies
+    const [searchTerm, setSearchTem] = useState([]); // for searching movie
+
+    const searchMovies = async (title) => {
+        const response = await fetch(`${API_URL}&s=${title}`);
+        const data = await response.json();
+        setMovies(data.Search);
+    }
+
+    useEffect(() => {
+        searchMovies('spiderman');
+    }, [])
+
+    return (
+        <div className="app">
+            <h1>HamzaMovies</h1>
+
+            <div className="search">
+                <input placeholder=" Chercher votre film" value={searchTerm} onChange={(e) => setSearchTem(e.target.value ) }></input>
+                <img src={SearchIcon}
+                    alt="search"
+                    onClick={() => searchMovies(searchTerm)} />
+            </div>
+            {
+                movies?.length > 0 ? ( // if the movies are found render them
+                    <div className="container">
+                        {movies.map((movie) => ( //fetch props data from moviecard container or loop using map
+                            <MovieCard movie={movie} />
+                        ))}
+                    </div>
+
+                ) : ( // if not return a no movies found message
+                    <div className="empty">
+                        <h1>aucun film</h1>
+                    </div>
+                )
+            }
+        </div>
+    );
 }
 
 export default App;
