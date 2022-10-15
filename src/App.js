@@ -16,14 +16,6 @@ import SearchIcon from './search.svg'; // importing search icon in svg format
 //API key 66252fcb
 const API_URL = 'https://www.omdbapi.com?apikey=66252fcb';
 
-const movie1 = {
-    Poster: "https://m.media-amazon.com/images/M/MV5BZDlmMGQwYmItNTNmOS00OTNkLTkxNTYtNDM3ZWVlMWUyZDIzXkEyXkFqcGdeQXVyMTA5Mzk5Mw@@._V1_SX300.jpg",
-    Title: "Spiderman in Cannes",
-    Type: "movie",
-    Year: "2016",
-    imdbID: "tt5978586"
-}
-
 const App = () => {
     const [movies, setMovies] = useState([]); // for looping movies
     const [searchTerm, setSearchTem] = useState([]); // for searching movie
@@ -43,7 +35,7 @@ const App = () => {
             <h1>HamzaMovies</h1>
 
             <div className="search">
-                <input placeholder=" Chercher votre film" value={searchTerm} onChange={(e) => setSearchTem(e.target.value ) }></input>
+                <input placeholder=" Chercher votre film" value={searchTerm} onChange={(e) => setSearchTem(e.target.value)}></input>
                 <img src={SearchIcon}
                     alt="search"
                     onClick={() => searchMovies(searchTerm)} />
